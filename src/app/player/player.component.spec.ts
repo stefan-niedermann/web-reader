@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { SpeechSynthesisModule } from '@kamiazya/ngx-speech-synthesis';
 import { MaterialModule } from '../material.module';
 
 import { PlayerComponent } from './player.component';
@@ -12,11 +14,19 @@ describe('PlayerComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MaterialModule,
-        NoopAnimationsModule
+        FormsModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        SpeechSynthesisModule.forRoot({
+          lang: 'en',
+          volume: 1.0,
+          pitch: 1.0,
+          rate: 1.0,
+        }),
       ],
-      declarations: [ PlayerComponent ]
+      declarations: [PlayerComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SpeechSynthesisService, SpeechSynthesisUtteranceFactoryService } from '@kamiazya/ngx-speech-synthesis';
 import { BehaviorSubject, merge, Observable, Subject, zip } from 'rxjs';
@@ -42,8 +42,8 @@ export class PlayerComponent implements OnInit {
     this.filteredVoices = this.voiceControl.valueChanges.pipe(
       startWith(''),
       map((searchInput: string | SpeechSynthesisVoice) => {
-        if (searchInput instanceof SpeechSynthesisVoice) {
-          this.utteranceFactory.voice = searchInput;
+        if ((searchInput as SpeechSynthesisVoice).lang) {
+          this.utteranceFactory.voice = searchInput as SpeechSynthesisVoice;
         }
         const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
         return voices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false);
