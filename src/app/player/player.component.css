@@ -1,7 +1,7 @@
 textarea {
     width: 100%;
     display: block;
-    height: calc(100vh - 21rem);
+    height: calc(100vh - 19rem);
     border-radius: 1rem;
     margin: auto;
     padding: 2rem;
@@ -55,4 +55,8 @@ select {
 
 .controls > mat-icon {
     margin-right: .5rem;
+}
+
+.controls:last-of-type {
+    margin-bottom: 0;
 }
