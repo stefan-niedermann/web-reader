@@ -31,7 +31,6 @@ import { MaterialModule } from './material.module';
       pitch: 1.0,
       rate: 1.0,
     }),
-
   ],
   providers: [],
   bootstrap: [AppComponent]

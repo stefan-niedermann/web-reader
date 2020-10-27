@@ -19,10 +19,10 @@ build_job:
       - dist/
 
 test_job:
-  image: node:latest
+  image: trion/ng-cli-karma:latest
   stage: test
   script:
-    - ./node_modules/@angular/cli/bin/ng test --watch=false --browsers PhantomJS
+    - ng test --progress false --watch false
   dependencies:
     - build_job
   artifacts:
