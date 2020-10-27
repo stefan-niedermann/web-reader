@@ -1,0 +1,42 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_job:
+  image: node:latest
+  stage: build
+  script:
+    - npm install
+    - ./node_modules/@angular/cli/bin/ng build --prod
+  cache:
+    key: ${CI_BUILD_REF_NAME}
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
+
+test_job:
+  image: node:latest
+  stage: test
+  script:
+    - ./node_modules/@angular/cli/bin/ng test --watch=false --browsers PhantomJS
+  dependencies:
+    - build_job
+  artifacts:
+    paths:
+      - dist/
+
+deploy_job:
+  image: debian:stable-slim
+  stage: deploy
+  script:
+    - apt-get update
+    - apt-get --yes --force-yes install lftp
+    - lftp -u $FTP_PRODUCTION_USER,$FTP_PRODUCTION_PASSWORD -e "set ssl:verify-certificate no;mirror $FTP_PRODUCTION_PATH/.well-known ./dist/; mirror -R ./dist/ $FTP_PRODUCTION_PATH-$CI_COMMIT_SHA; rm -r $FTP_PRODUCTION_PATH-alt; mv $FTP_PRODUCTION_PATH $FTP_PRODUCTION_PATH-alt; mv $FTP_PRODUCTION_PATH-$CI_COMMIT_SHA $FTP_PRODUCTION_PATH; quit;" $FTP_PRODUCTION_URL
+  only:
+    - master
+  dependencies:
+    - test_job

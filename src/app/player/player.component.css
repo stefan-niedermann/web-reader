@@ -1,0 +1,57 @@
+textarea {
+    width: 100%;
+    display: block;
+    height: calc(100vh - 21rem);
+    border-radius: 1rem;
+    margin: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    border: 2px solid white;
+    background-color: #f5f5f5;
+    resize: vertical;
+    font-size: larger;
+}
+textarea:focus {
+    border-color: #7b1fa2;
+    outline: none;
+}
+
+.content {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+@media (min-width: 1360px) {
+    .content {
+        max-width: 1360px;
+        padding: 2rem;
+    }
+}
+
+select {
+    border: 0;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: white;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.controls > button,
+.controls > mat-icon {
+    margin-left: 1rem;
+}
+
+.controls > button:first-of-type, 
+.controls > mat-icon:first-of-type {
+    margin-left: 0;
+}
+
+.controls > mat-icon {
+    margin-right: .5rem;
+}
