@@ -11,17 +11,42 @@
             operating system and browser you are using.</p>
         <p>You can (and should) set the language of the reader voice to match the language of the inserted text. Press
             the gear next to the "Play"-button to change the voice. You can also find an option to level the speed</p>
-        <h2>Maintainer</h2>
-        <p>Stefan Niedermann (Niedermann IT-Dienstleistungen) - <a
-                href="https://www.niedermann.it">www.niedermann.it</a></p>
-        <h2>Contribute</h2>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar class="license-avatar">
+            <mat-icon>people</mat-icon>
+        </div>
+        <mat-card-title>People</mat-card-title>
+        <mat-card-subtitle>Join the team</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p><strong>Maintainer</strong></p>
+        <p>Stefan Niedermann (Niedermann IT-Dienstleistungen) - <a color="accent" mat-raised-button
+                href="https://www.niedermann.it">Website</a></p>
+        <p><strong>Contribute</strong></p>
         <p>This is an open source project: You can contribute with <a
-                href="https://gitlab.com/stefan-niedermann/web-reader/merge_requests">Merge Requests</a>, <a
-                href="https://gitlab.com/stefan-niedermann/web-reader/issues">Feature Requests</a> and <a
-                href="https://gitlab.com/stefan-niedermann/web-reader/issues">Bug Reports</a></p>
-        <h2>License</h2>
-        <p>All contributions to this repository are considered to be licensed under the <a
-                href="https://gitlab.com/stefan-niedermann/web-reader/-/raw/main/LICENSE">GNU GENERAL PUBLIC LICENSE
+                href="https://gitlab.com/stefan-niedermann/web-reader/merge_requests" mat-raised-button>Merge
+                Requests</a>, <a href="https://gitlab.com/stefan-niedermann/web-reader/issues"
+                mat-raised-button>Feature Requests</a> and <a
+                href="https://gitlab.com/stefan-niedermann/web-reader/issues" mat-raised-button>Bug Reports</a></p>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar class="license-avatar">
+            <mat-icon>note</mat-icon>
+        </div>
+        <mat-card-title>Licenses</mat-card-title>
+        <mat-card-subtitle>from 3rd party libraries</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>All contributions to this app itself are considered to be licensed under the <a
+                mat-raised-button href="https://gitlab.com/stefan-niedermann/web-reader/-/raw/main/LICENSE">GPL
                 3+</a>.</p>
+        <p [innerHTML]="licenses"></p>
     </mat-card-content>
 </mat-card>
