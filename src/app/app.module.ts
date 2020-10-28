@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
 import { AboutComponent } from './about/about.component';
+import { GeneratedLicenseFileAvailable } from './licenses/licenses.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { AboutComponent } from './about/about.component';
   ],
   providers: [
     { provide: Navigator, useValue: window.navigator },
-    { provide: Window, useValue: window }
+    { provide: Window, useValue: window },
+    { provide: GeneratedLicenseFileAvailable, useValue: environment.production }
   ],
   bootstrap: [AppComponent]
 })
