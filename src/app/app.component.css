@@ -1,5 +1,10 @@
-h1 {
-    cursor: pointer;
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:focus {
+    outline-offset: .5rem;
 }
 
 .spacer {
