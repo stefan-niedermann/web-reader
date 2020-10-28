@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/player.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SpeechSynthesisModule } from '@kamiazya/ngx-speech-synthesis';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { LicensesComponent } from './licenses/licenses.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
@@ -22,7 +22,6 @@ import { MaterialModule } from './material.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
     SpeechSynthesisModule.forRoot({

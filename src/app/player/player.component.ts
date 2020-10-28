@@ -1,8 +1,6 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { SpeechSynthesisService, SpeechSynthesisUtteranceFactoryService } from '@kamiazya/ngx-speech-synthesis';
-import { BehaviorSubject, merge, Observable, Subject, zip } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { BehaviorSubject, merge, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-player',
@@ -20,10 +18,12 @@ export class PlayerComponent implements OnInit {
   settingsVisible$ = new BehaviorSubject(false);
   stopButtonDisabled$ = new BehaviorSubject(true);
 
-  rateControl = new FormControl(1);
-  contentControl = new FormControl();
-  voiceControl = new FormControl();
-  filteredVoices: Observable<SpeechSynthesisVoice[]>;
+  content = '';
+  rate = 1;
+  voice: string | SpeechSynthesisVoice;
+  
+  availableVoices: SpeechSynthesisVoice[];
+  filteredVoices: BehaviorSubject<SpeechSynthesisVoice[]> = new BehaviorSubject([]);
 
   constructor(
     private speechSynthesis: SpeechSynthesisService,
@@ -32,41 +32,26 @@ export class PlayerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const voices = this.speechSynthesis.getVoices();
+    // https://github.com/kamiazya/ngx-speech-synthesis/issues/549
+    this.availableVoices = this.speechSynthesis.getVoices();
+    console.log('available voices:', this.availableVoices);
 
-    this.voiceControl.setValue(voices.find((voice) => voice.lang === 'de'));
-    this.utteranceFactory.voice = this.voiceControl.value;
-    this.rateControl.valueChanges.subscribe((next) => {
-      this.utteranceFactory.rate = Math.round(next);
-    });
-    this.filteredVoices = this.voiceControl.valueChanges.pipe(
-      startWith(''),
-      map((searchInput: string | SpeechSynthesisVoice) => {
-        if ((searchInput as SpeechSynthesisVoice).lang) {
-          this.utteranceFactory.voice = searchInput as SpeechSynthesisVoice;
-        }
-        const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
-        return voices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false);
-      })
-    );
-
-    merge(
-      this.stopPressed$,
-      this.allRunningUtterancesFinished$
-    ).subscribe(() => this.stopButtonDisabled$.next(true));
+    this.voice = this.availableVoices.find((voice) => voice.lang === 'de');
+    console.log('found default voice:', this.voice);
+    this.utteranceFactory.voice = this.voice;
 
     this.playPressed$.subscribe(() => {
       if (this.speechSynthesis.speaking) {
         this.stopPressed$.next();
       }
-      // TODO report ngZone issue upstream (https://www.educative.io/edpresso/change-detection-getting-in-the-angular-zone)
+      // https://github.com/kamiazya/ngx-speech-synthesis/issues/550
       this.utteranceFactory.onend = (a) => {
         this.runningUtterancesCount--;
         if (this.runningUtterancesCount === 0) {
           this.ngZone.run(() => this.allRunningUtterancesFinished$.next())
         }
       }
-      this.speechSynthesis.speak(this.utteranceFactory.text(this.contentControl.value));
+      this.speechSynthesis.speak(this.utteranceFactory.text(this.content));
       this.runningUtterancesCount++;
       this.stopButtonDisabled$.next(false);
     });
@@ -74,6 +59,11 @@ export class PlayerComponent implements OnInit {
     this.stopPressed$.subscribe(() => {
       this.speechSynthesis.cancel();
     });
+
+    merge(
+      this.stopPressed$,
+      this.allRunningUtterancesFinished$
+    ).subscribe(() => this.stopButtonDisabled$.next(true));
   }
 
   displayFn(voice: SpeechSynthesisVoice): string {
@@ -94,5 +84,17 @@ export class PlayerComponent implements OnInit {
 
   toggleSettings() {
     this.settingsVisible$.next(!this.settingsVisible$.getValue());
+  }
+
+  updateVoice(searchInput: string | SpeechSynthesisVoice) {
+      if ((searchInput as SpeechSynthesisVoice).lang) {
+        this.utteranceFactory.voice = searchInput as SpeechSynthesisVoice;
+      }
+      const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
+      this.filteredVoices.next(this.availableVoices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false));
+  }
+
+  updateRate(next) {
+    this.utteranceFactory.rate = Math.round(next);
   }
 }

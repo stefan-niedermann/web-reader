@@ -1,5 +1,5 @@
 <form class="content">
-    <textarea id="content" [formControl]="contentControl" placeholder="Lorem Ipsum dolor sit amet..."></textarea>
+    <textarea id="content" [(ngModel)]="content" name="content" placeholder="Lorem Ipsum dolor sit amet..."></textarea>
     <div class="controls">
         <button mat-mini-fab color="secondary" aria-label="Settings" (click)="toggleSettings()"
             (keydown.enter)="toggleSettings()" (keydown.space)="toggleSettings()">
@@ -17,7 +17,7 @@
     <div class="controls" [hidden]="!(settingsVisible$ | async)">
         <mat-icon>language</mat-icon>
         <mat-form-field>
-            <input type="text" placeholder="Text language" aria-label="Voice" matInput [formControl]="voiceControl"
+            <input type="text" placeholder="Text language" aria-label="Voice" matInput [ngModel]="voice" (ngModelChange)="updateVoice($event)" name="voice"
                 [matAutocomplete]="auto" />
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let voice of filteredVoices | async" [value]="voice">
@@ -26,7 +26,7 @@
             </mat-autocomplete>
         </mat-form-field>
         <mat-icon>speed</mat-icon>
-        <mat-slider color="primary" thumbLabel min="0.1" max="3" step="0.1" value="1" [formControl]="rateControl"
+        <mat-slider color="primary" thumbLabel min="0.1" max="3" step="0.1" value="1" [ngModel]="rate" (ngModelChange)="updateRate($event)" name="rate"
             [displayWith]="formatRate"></mat-slider>
     </div>
 </form>

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SpeechSynthesisModule } from '@kamiazya/ngx-speech-synthesis';
 import { MaterialModule } from '../material.module';
@@ -15,7 +15,6 @@ describe('PlayerComponent', () => {
       imports: [
         MaterialModule,
         FormsModule,
-        ReactiveFormsModule,
         NoopAnimationsModule,
         SpeechSynthesisModule.forRoot({
           lang: 'en',
