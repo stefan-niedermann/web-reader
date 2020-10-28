@@ -69,20 +69,12 @@ export class PlayerComponent implements OnInit {
     ).subscribe(() => this.stopButtonDisabled$.next(true));
   }
 
-  displayFn(voice: SpeechSynthesisVoice): string {
-    return voice && voice.name ? voice.name : '';
-  }
-
   speak() {
     this.playPressed$.next();
   }
 
   stop() {
     this.stopPressed$.next();
-  }
-
-  formatRate(rate: number) {
-    return `${Math.round(rate * 10) / 10}x`;
   }
 
   toggleSettings() {
@@ -95,5 +87,13 @@ export class PlayerComponent implements OnInit {
       }
       const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
       this.filteredVoices.next(this.availableVoices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false));
+  }
+
+  formatRate(rate: number) {
+    return `${Math.round(rate * 10) / 10}x`;
+  }
+
+  displayVoice(voice: SpeechSynthesisVoice): string {
+    return voice && voice.name ? voice.name : '';
   }
 }

@@ -9,6 +9,7 @@ import { AboutComponent } from './about.component';
 describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
+  let licenseService: LicensesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,9 +28,16 @@ describe('AboutComponent', () => {
     fixture = TestBed.createComponent(AboutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    licenseService = TestBed.inject(LicensesService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should fetch license informations in ngOnInit() callback', () => {
+    spyOn(licenseService, 'getLicenses').and.callThrough();
+    component.ngOnInit();
+    expect(licenseService.getLicenses).toHaveBeenCalledTimes(1);
   });
 });

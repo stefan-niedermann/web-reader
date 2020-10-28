@@ -19,7 +19,7 @@
         <mat-form-field>
             <input type="text" placeholder="Text language" aria-label="Voice" matInput [ngModel]="voice" (ngModelChange)="updateVoice($event)" name="voice"
                 [matAutocomplete]="auto" />
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayVoice">
                 <mat-option *ngFor="let voice of filteredVoices | async" [value]="voice">
                     {{voice.name}}
                 </mat-option>
