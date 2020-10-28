@@ -7,10 +7,6 @@ a:focus {
     outline-offset: .5rem;
 }
 
-button {
-    margin-left: 1rem;
-}
-
 .spacer {
     flex: 1 1 auto;
 }
