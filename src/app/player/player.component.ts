@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { SpeechSynthesisService, SpeechSynthesisUtteranceFactoryService } from '@kamiazya/ngx-speech-synthesis';
 import { BehaviorSubject, merge, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
 
 @Component({
   selector: 'app-player',
@@ -22,36 +23,38 @@ export class PlayerComponent implements OnInit {
   rate = 1;
   voice: string | SpeechSynthesisVoice;
   
-  availableVoices: SpeechSynthesisVoice[];
+  availableVoices: SpeechSynthesisVoice[] = [];
   filteredVoices: BehaviorSubject<SpeechSynthesisVoice[]> = new BehaviorSubject([]);
+  currentVoice: SpeechSynthesisVoice;
 
   constructor(
     private speechSynthesis: SpeechSynthesisService,
-    private utteranceFactory: SpeechSynthesisUtteranceFactoryService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private navigator: Navigator
   ) { }
 
   ngOnInit(): void {
-    // https://github.com/kamiazya/ngx-speech-synthesis/issues/549
-    this.availableVoices = this.speechSynthesis.getVoices();
-    console.log('available voices:', this.availableVoices);
-
-    this.voice = this.availableVoices.find((voice) => voice.lang === 'de');
-    console.log('found default voice:', this.voice);
-    this.utteranceFactory.voice = this.voice;
+    this.speechSynthesis.getVoices()
+    .pipe(tap(next => this.availableVoices = next))
+    .subscribe(next => {
+      this.voice = this.availableVoices.find((voice) => voice.lang === this.navigator.language);
+      this.currentVoice = this.voice;
+    });
 
     this.playPressed$.subscribe(() => {
       if (this.speechSynthesis.speaking) {
         this.stopPressed$.next();
       }
-      // https://github.com/kamiazya/ngx-speech-synthesis/issues/550
-      this.utteranceFactory.onend = (a) => {
+      const utterance = new SpeechSynthesisUtterance(this.content);
+      utterance.voice = this.currentVoice;
+      utterance.rate = this.rate;
+      utterance.onend = () => {
         this.runningUtterancesCount--;
         if (this.runningUtterancesCount === 0) {
           this.ngZone.run(() => this.allRunningUtterancesFinished$.next())
         }
       }
-      this.speechSynthesis.speak(this.utteranceFactory.text(this.content));
+      this.speechSynthesis.speak(utterance);
       this.runningUtterancesCount++;
       this.stopButtonDisabled$.next(false);
     });
@@ -88,13 +91,9 @@ export class PlayerComponent implements OnInit {
 
   updateVoice(searchInput: string | SpeechSynthesisVoice) {
       if ((searchInput as SpeechSynthesisVoice).lang) {
-        this.utteranceFactory.voice = searchInput as SpeechSynthesisVoice;
+        this.currentVoice = searchInput as SpeechSynthesisVoice;
       }
       const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
       this.filteredVoices.next(this.availableVoices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false));
-  }
-
-  updateRate(next) {
-    this.utteranceFactory.rate = Math.round(next);
   }
 }

@@ -26,7 +26,7 @@
             </mat-autocomplete>
         </mat-form-field>
         <mat-icon>speed</mat-icon>
-        <mat-slider color="primary" thumbLabel min="0.1" max="3" step="0.1" value="1" [ngModel]="rate" (ngModelChange)="updateRate($event)" name="rate"
+        <mat-slider color="primary" thumbLabel min="0.1" max="3" step="0.1" value="1" [(ngModel)]="rate" name="rate"
             [displayWith]="formatRate"></mat-slider>
     </div>
 </form>
