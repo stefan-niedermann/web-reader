@@ -9,12 +9,14 @@ import { FormsModule } from '@angular/forms';
 import { LicensesComponent } from './licenses/licenses.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
-    LicensesComponent
+    LicensesComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
