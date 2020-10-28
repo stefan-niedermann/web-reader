@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material.module';
-import { SpeechSynthesisMockService } from '../speech-synthesis/speech-synthesis.mock.service';
+import { SpeechSynthesisMockService } from '../speech-synthesis/speech-synthesis.service.mock';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
 
 import { PlayerComponent } from './player.component';

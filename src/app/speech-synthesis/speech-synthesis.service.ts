@@ -10,6 +10,11 @@ export class SpeechSynthesisService {
     private _window: Window
   ) { }
 
+  /**
+   * A wrapper to get the same behavior on different browsers.
+   * 
+   * https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/onvoiceschanged#Examples
+   */
   public getVoices(): Observable<SpeechSynthesisVoice[]> {
     const result = new BehaviorSubject<SpeechSynthesisVoice[]>([]);
     const pushVoices = () => result.next(this._window.speechSynthesis.getVoices());
