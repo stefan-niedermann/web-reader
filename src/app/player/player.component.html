@@ -1,15 +1,15 @@
 <form class="content">
     <textarea id="content" [(ngModel)]="content" name="content" placeholder="Insert any text here and let it read to you…"></textarea>
     <div class="controls">
-        <button mat-mini-fab color="secondary" aria-label="Settings" (click)="toggleSettings()"
+        <button mat-mini-fab color="secondary" matTooltip="Settings" aria-label="Settings" (click)="toggleSettings()"
             (keydown.enter)="toggleSettings()" (keydown.space)="toggleSettings()">
             <mat-icon>settings</mat-icon>
         </button>
-        <button mat-fab color="accent" aria-label="Play" (click)="speak()" (keydown.enter)="speak()"
+        <button mat-fab color="accent" matTooltip="Play (Ctrl + Enter)" aria-label="Play" (click)="speak()" (keydown.enter)="speak()"
             (keydown.space)="speak()">
             <mat-icon>play_arrow</mat-icon>
         </button>
-        <button mat-mini-fab color="primary" [disabled]="stopButtonDisabled$ | async" aria-label="Stop" (click)="stop()"
+        <button mat-mini-fab color="primary" matTooltip="Stop (Esc)" [disabled]="stopButtonDisabled$ | async" aria-label="Stop" (click)="stop()"
             (keydown.enter)="stop()" (keydown.space)="stop()">
             <mat-icon>stop</mat-icon>
         </button>

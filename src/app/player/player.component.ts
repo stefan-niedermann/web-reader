@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { BehaviorSubject, merge, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
@@ -69,10 +69,12 @@ export class PlayerComponent implements OnInit {
     ).subscribe(() => this.stopButtonDisabled$.next(true));
   }
 
+  @HostListener("keydown.control.enter", ['$event'])
   speak() {
     this.playPressed$.next();
   }
 
+  @HostListener("keydown.escape", ['$event'])
   stop() {
     this.stopPressed$.next();
   }
