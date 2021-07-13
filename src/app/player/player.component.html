@@ -16,8 +16,9 @@
     </div>
     <div class="controls" [hidden]="!(settingsVisible$ | async)">
         <mat-icon>language</mat-icon>
-        <mat-form-field>
-            <input type="text" placeholder="Text language" aria-label="Voice" matInput [ngModel]="voice" (ngModelChange)="updateVoice($event)" name="voice"
+        <mat-form-field appearance="fill">
+            <mat-label>Text language</mat-label>
+            <input type="text" aria-label="Voice" matInput [ngModel]="voice" (ngModelChange)="updateVoice($event)" name="voice"
                 [matAutocomplete]="auto" />
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayVoice">
                 <mat-option *ngFor="let voice of filteredVoices | async" [value]="voice">
