@@ -1,6 +1,6 @@
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, merge, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
 
 @Component({
@@ -8,7 +8,9 @@ import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.ser
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnDestroy {
+
+  private readonly unsubscribe$ = new Subject<void>();
 
   runningUtterancesCount = 0;
 
@@ -22,7 +24,7 @@ export class PlayerComponent implements OnInit {
   content = '';
   rate = 1;
   voice: string | SpeechSynthesisVoice;
-  
+
   availableVoices: SpeechSynthesisVoice[] = [];
   filteredVoices: BehaviorSubject<SpeechSynthesisVoice[]> = new BehaviorSubject([]);
   currentVoice: SpeechSynthesisVoice;
@@ -35,38 +37,52 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.speechSynthesis.getVoices()
-    .pipe(tap(next => this.availableVoices = next))
-    .subscribe(next => {
-      this.voice = this.availableVoices.find((voice) => voice.lang === this.navigator.language);
-      this.currentVoice = this.voice;
-    });
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap(next => this.availableVoices = next)
+      )
+      .subscribe(() => {
+        this.voice = this.availableVoices.find((voice) => voice.lang === this.navigator.language);
+        this.currentVoice = this.voice;
+      });
 
-    this.playPressed$.subscribe(() => {
-      if (this.speechSynthesis.speaking) {
-        this.stopPressed$.next();
-      }
-      const utterance = new SpeechSynthesisUtterance(this.content);
-      utterance.voice = this.currentVoice;
-      utterance.rate = this.rate;
-      utterance.onend = () => {
-        this.runningUtterancesCount--;
-        if (this.runningUtterancesCount === 0) {
-          this.ngZone.run(() => this.allRunningUtterancesFinished$.next())
+    this.playPressed$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        if (this.speechSynthesis.speaking) {
+          this.stopPressed$.next();
         }
-      }
-      this.speechSynthesis.speak(utterance);
-      this.runningUtterancesCount++;
-      this.stopButtonDisabled$.next(false);
-    });
+        const utterance = new SpeechSynthesisUtterance(this.content);
+        utterance.voice = this.currentVoice;
+        utterance.rate = this.rate;
+        utterance.onend = () => {
+          this.runningUtterancesCount--;
+          if (this.runningUtterancesCount === 0) {
+            this.ngZone.run(() => this.allRunningUtterancesFinished$.next())
+          }
+        }
+        this.speechSynthesis.speak(utterance);
+        this.runningUtterancesCount++;
+        this.stopButtonDisabled$.next(false);
+      });
 
-    this.stopPressed$.subscribe(() => {
-      this.speechSynthesis.cancel();
-    });
+    this.stopPressed$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.speechSynthesis.cancel();
+      });
 
     merge(
       this.stopPressed$,
       this.allRunningUtterancesFinished$
-    ).subscribe(() => this.stopButtonDisabled$.next(true));
+    )
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.stopButtonDisabled$.next(true));
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   @HostListener("keydown.control.enter", ['$event'])
@@ -84,11 +100,11 @@ export class PlayerComponent implements OnInit {
   }
 
   updateVoice(searchInput: string | SpeechSynthesisVoice) {
-      if ((searchInput as SpeechSynthesisVoice).lang) {
-        this.currentVoice = searchInput as SpeechSynthesisVoice;
-      }
-      const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
-      this.filteredVoices.next(this.availableVoices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false));
+    if ((searchInput as SpeechSynthesisVoice).lang) {
+      this.currentVoice = searchInput as SpeechSynthesisVoice;
+    }
+    const filterValue = searchInput ? (searchInput instanceof SpeechSynthesisVoice) ? searchInput.name.toLowerCase() : searchInput.toLowerCase() : '';
+    this.filteredVoices.next(this.availableVoices.filter(option => option && option.name ? option.name.toLowerCase().indexOf(filterValue) >= 0 : false));
   }
 
   formatRate(rate: number) {
