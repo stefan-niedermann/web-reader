@@ -1,13 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '../material.module';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
 import { MockProvider } from 'ng-mocks'
 
 import { NavigatorLanguage, PlayerComponent } from './player.component';
-import { NgZone } from '@angular/core';
 import { EMPTY } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSliderModule } from '@angular/material/slider';
 
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
@@ -16,9 +21,15 @@ describe('PlayerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
         FormsModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatIconModule,
+        MatSliderModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatInputModule,
+        MatTooltipModule
       ],
       declarations: [PlayerComponent],
       providers: [
