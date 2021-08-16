@@ -11,6 +11,7 @@ describe('LicensesService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        LicensesService,
         { provide: GeneratedLicenseFileAvailable, useValue: true }
       ]
     });
