@@ -36,7 +36,7 @@ describe('AboutComponent', () => {
   });
 
   it('should fetch license informations in ngOnInit() callback', () => {
-    spyOn(licenseService, 'getLicenses').and.callThrough();
+    jest.spyOn(licenseService, 'getLicenses');
     component.ngOnInit();
     expect(licenseService.getLicenses).toHaveBeenCalledTimes(1);
   });

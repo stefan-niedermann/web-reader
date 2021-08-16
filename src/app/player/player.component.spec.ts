@@ -4,8 +4,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material.module';
 import { SpeechSynthesisMockService } from '../speech-synthesis/speech-synthesis.service.mock';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
+import { MockProvider } from 'ng-mocks'
 
 import { PlayerComponent } from './player.component';
+import { NgZone } from '@angular/core';
 
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
@@ -22,6 +24,8 @@ describe('PlayerComponent', () => {
       providers: [
         { provide: Navigator, useValue: { language: 'en' } },
         { provide: SpeechSynthesisService, useClass: SpeechSynthesisMockService },
+        MockProvider(Window),
+        MockProvider(NgZone)
       ]
     })
       .compileComponents();

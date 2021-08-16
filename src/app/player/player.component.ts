@@ -12,9 +12,9 @@ export class PlayerComponent implements OnInit {
 
   runningUtterancesCount = 0;
 
-  playPressed$ = new Subject();
-  stopPressed$ = new Subject();
-  allRunningUtterancesFinished$ = new Subject();
+  playPressed$ = new Subject<void>();
+  stopPressed$ = new Subject<void>();
+  allRunningUtterancesFinished$ = new Subject<void>();
 
   settingsVisible$ = new BehaviorSubject(false);
   stopButtonDisabled$ = new BehaviorSubject(true);

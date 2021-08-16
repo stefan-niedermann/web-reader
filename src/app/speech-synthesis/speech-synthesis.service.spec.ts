@@ -31,14 +31,14 @@ describe('SpeechSynthesisService', () => {
   });
 
   it('should pass an utterance through to the SpeechSynthesis object', () => {
-    spyOn(_window.speechSynthesis, 'speak').and.callThrough();
-    const utterance = new SpeechSynthesisUtterance('abc');
+    jest.spyOn(_window.speechSynthesis, 'speak');
+    const utterance = {} as SpeechSynthesisUtterance;
     service.speak(utterance);
     expect(_window.speechSynthesis.speak).toHaveBeenCalledWith(utterance);
   });
 
   it('should pass through a request to cancel the speech to the SpeechSynthesis object', () => {
-    spyOn(_window.speechSynthesis, 'cancel').and.callThrough();
+    jest.spyOn(_window.speechSynthesis, 'cancel');
     service.cancel();
     expect(_window.speechSynthesis.cancel).toHaveBeenCalledTimes(1);
   });
@@ -54,7 +54,7 @@ describe('SpeechSynthesisService', () => {
 
   it('should fetch voices directly and again if the onvoiceschanged callback is available and fired', (done) => {
     _window.speechSynthesis.onvoiceschanged = {};
-    spyOn(_window.speechSynthesis, 'getVoices').and.callThrough();
+    jest.spyOn(_window.speechSynthesis, 'getVoices');
     let counter = 0;
     service.getVoices().subscribe(() => {
       counter++;
@@ -72,7 +72,7 @@ describe('SpeechSynthesisService', () => {
 
   it('should fetch voices of the SpeechSynthesis object directly if there is no onvoiceschanged callback', (done) => {
     _window.speechSynthesis.onvoiceschanged = undefined;
-    spyOn(_window.speechSynthesis, 'getVoices').and.callThrough();
+    jest.spyOn(_window.speechSynthesis, 'getVoices');
     service.getVoices().subscribe(() => {
       expect(_window.speechSynthesis.getVoices).toHaveBeenCalledTimes(1);
       done();
