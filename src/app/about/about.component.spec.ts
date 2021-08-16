@@ -1,7 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockProvider } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
 import { LicensesService } from '../licenses/licenses.service';
-import { LicensesServiceMock } from '../licenses/licenses.service.mock';
 import { MaterialModule } from '../material.module';
 
 import { AboutComponent } from './about.component';
@@ -9,7 +10,6 @@ import { AboutComponent } from './about.component';
 describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
-  let licenseService: LicensesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,7 +18,7 @@ describe('AboutComponent', () => {
       ],
       declarations: [AboutComponent],
       providers: [
-        { provide: LicensesService, useClass: LicensesServiceMock }
+        MockProvider(LicensesService, { getLicenses: () => EMPTY})
       ]
     })
       .compileComponents();
@@ -28,7 +28,6 @@ describe('AboutComponent', () => {
     fixture = TestBed.createComponent(AboutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    licenseService = TestBed.inject(LicensesService);
   });
 
   it('should create', () => {
@@ -36,8 +35,9 @@ describe('AboutComponent', () => {
   });
 
   it('should fetch license informations in ngOnInit() callback', () => {
-    jest.spyOn(licenseService, 'getLicenses');
+    const licensesService = TestBed.inject(LicensesService);
+    jest.spyOn(licensesService, 'getLicenses');
     component.ngOnInit();
-    expect(licenseService.getLicenses).toHaveBeenCalledTimes(1);
+    expect(licensesService.getLicenses).toHaveBeenCalledTimes(1);
   });
 });

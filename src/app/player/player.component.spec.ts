@@ -5,9 +5,8 @@ import { MaterialModule } from '../material.module';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
 import { MockProvider } from 'ng-mocks'
 
-import { PlayerComponent } from './player.component';
+import { NavigatorLanguage, PlayerComponent } from './player.component';
 import { NgZone } from '@angular/core';
-import { LicensesService } from '../licenses/licenses.service';
 import { EMPTY } from 'rxjs';
 
 describe('PlayerComponent', () => {
@@ -23,12 +22,8 @@ describe('PlayerComponent', () => {
       ],
       declarations: [PlayerComponent],
       providers: [
-        { provide: Navigator, useValue: { language: 'en' } },
-        MockProvider(SpeechSynthesisService, {
-          getVoices: () => EMPTY
-        }),
-        MockProvider(NgZone),
-        MockProvider(LicensesService)
+        MockProvider(NavigatorLanguage, 'en'),
+        MockProvider(SpeechSynthesisService, { getVoices: () => EMPTY })
       ]
     })
       .compileComponents();
@@ -40,7 +35,7 @@ describe('PlayerComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

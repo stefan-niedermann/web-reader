@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, InjectionToken, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { SpeechSynthesisService } from '../speech-synthesis/speech-synthesis.service';
@@ -30,9 +30,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
   currentVoice: SpeechSynthesisVoice;
 
   constructor(
-    private speechSynthesis: SpeechSynthesisService,
-    private ngZone: NgZone,
-    private navigator: Navigator
+    @Inject(NavigatorLanguage)
+    private readonly navigatorLanguage: string,
+    private readonly speechSynthesis: SpeechSynthesisService,
+    private readonly ngZone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +43,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
         tap(next => this.availableVoices = next)
       )
       .subscribe(() => {
-        this.voice = this.availableVoices.find((voice) => voice.lang === this.navigator.language);
+        this.voice = this.availableVoices.find((voice) => voice.lang === this.navigatorLanguage);
         this.currentVoice = this.voice;
       });
 
@@ -115,3 +116,5 @@ export class PlayerComponent implements OnInit, OnDestroy {
     return voice && voice.name ? voice.name : '';
   }
 }
+
+export const NavigatorLanguage = new InjectionToken<string>('NavigatorLanguage');

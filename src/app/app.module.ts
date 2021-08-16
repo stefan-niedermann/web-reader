@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PlayerComponent } from './player/player.component';
+import { NavigatorLanguage, PlayerComponent } from './player/player.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -27,9 +27,9 @@ import { environment } from 'src/environments/environment';
     MaterialModule,
   ],
   providers: [
-    { provide: Navigator, useValue: window.navigator },
     { provide: Window, useValue: window },
-    { provide: GeneratedLicenseFileAvailable, useValue: environment.production }
+    { provide: GeneratedLicenseFileAvailable, useValue: environment.production },
+    { provide: NavigatorLanguage, useValue: window.navigator.language }
   ],
   bootstrap: [AppComponent]
 })
