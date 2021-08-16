@@ -108,13 +108,13 @@
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "upcoming-analyzer:serve",
+            "devServerTarget": "web-reader:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "upcoming-analyzer:serve:production"
+              "devServerTarget": "web-reader:serve:production"
             }
           }
         }
