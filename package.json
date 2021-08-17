@@ -34,7 +34,7 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.1",
     "codelyzer": "^6.0.0",
-    "cypress": "8.2.0",
+    "cypress": "8.3.0",
     "jest": "^27.0.6",
     "jest-preset-angular": "^9.0.5",
     "ng-mocks": "^12.4.0",
