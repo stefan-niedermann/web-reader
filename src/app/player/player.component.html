@@ -14,7 +14,7 @@
             <mat-icon>stop</mat-icon>
         </button>
     </div>
-    <div class="controls" [hidden]="!(settingsVisible$ | async)">
+    <div class="controls" [hidden]="(settingsVisible$ | async) === false">
         <mat-icon>language</mat-icon>
         <mat-form-field appearance="fill">
             <mat-label>Text language</mat-label>
