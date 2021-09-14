@@ -38,7 +38,7 @@
     "@cypress/schematic": "^1.5.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",
-    "@typescript-eslint/eslint-plugin": "4.31.0",
+    "@typescript-eslint/eslint-plugin": "4.31.1",
     "@typescript-eslint/parser": "4.31.1",
     "cypress": "8.4.0",
     "eslint": "^7.26.0",
