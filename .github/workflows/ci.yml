@@ -71,7 +71,7 @@ jobs:
           name: bundle
           path: ./
       - name: Install lftp
-        run: sudo apt install lftp
+        run: sudo apt-get install lftp
       - name: Pull .well-known
         continue-on-error: true
         run: lftp -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} -e "set ssl:verify-certificate no; mirror ${{ secrets.FTP_SERVER_DIR }}/.well-known ./; quit;" ${{ secrets.FTP_URL }}
