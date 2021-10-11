@@ -42,7 +42,7 @@
     "@typescript-eslint/parser": "4.33.0",
     "cypress": "8.5.0",
     "eslint": "^7.26.0",
-    "jest": "^27.2.4",
+    "jest": "^27.2.5",
     "jest-preset-angular": "^10.0.1",
     "ng-mocks": "^12.5.0",
     "ts-jest": "^27.0.5",
