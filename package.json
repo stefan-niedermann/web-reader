@@ -35,7 +35,7 @@
     "@angular-eslint/template-parser": "12.6.1",
     "@angular/cli": "~12.2.12",
     "@angular/compiler-cli": "~12.2.12",
-    "@cypress/schematic": "^1.5.1",
+    "@cypress/schematic": "^1.5.3",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "5.2.0",
