@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /.angular
+/cypress/videos
 # Only exists if Bazel was run
 /bazel-out
 
