@@ -16,7 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule.withConfig({
+      disableAnimations: window.matchMedia("(prefers-reduced-motion)").matches
+    }),
     AppRoutingModule,
     HttpClientModule,
     MatToolbarModule,
