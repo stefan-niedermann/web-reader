@@ -66,7 +66,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Unstash bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: bundle
           path: ./
