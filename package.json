@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "cypress": "^9.6.1",
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "jest": "^27.5.0",
     "jest-preset-angular": "^11.1.2",
     "ng-mocks": "^13.5.1",
